@@ -1,0 +1,9 @@
+Vivado Simulator 2018.2
+Time resolution is 1 ps
+			            INPUTS                      REAL    OUTPUT  
+
+			    OPCODE   DATA IN    ACCUM IN      ALU OUT   ZERO BIT
+			    ------   --------   --------      --------  --------
+ADD OPERATION       :      001     11111001   00000100  |   11111101      0
+SUB OPERATION       :      010     11111011   11111001  |   00000000      1
+AND OPERATION       :      011     00000101   00000101  |   01100001      0
