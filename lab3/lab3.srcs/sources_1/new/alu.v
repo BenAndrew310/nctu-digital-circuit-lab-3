@@ -27,14 +27,18 @@ input [8-1:0] data;
 input [3-1:0] opcode;
 input clk;
 input reset;
-output reg [8-1:0] alu_out;
+output reg signed [8-1:0] alu_out;
 output wire zero;
 
+assign zero = (accum==0) ? 1'b1 : 1'b0;
 
-assign zero = (alu_out==0) ? 1'b1 : 1'b0;
+reg signed [4-1:0] accum_c;
+reg signed [4-1:0] data_c;
 
 always @(posedge clk) begin
-	if (reset) alu_out = 8'b0;
+	if (reset) begin
+	   alu_out = 8'b0;
+	end
 	// 000 : Pass accum
 	else if (opcode==3'b0) alu_out <= accum;
 	// 001 : accum + data	(add)
@@ -48,7 +52,11 @@ always @(posedge clk) begin
 	// 101 : ABS(accum) 	(absolute value)
 	else if (opcode==3'b101) alu_out <= (accum[7]) ? (~accum + 1) : accum;
 	// 110 : MUL 			(multiplication)
-	else if (opcode==3'b110) alu_out <= accum * data;
+	else if (opcode==3'b110) begin
+	   accum_c = accum[3:0];
+	   data_c = data[3:0]; 
+	   alu_out = accum_c * data_c;
+	end
 	// 111 : Pass data
 	else if (opcode==3'b111) alu_out <= data;
 	
